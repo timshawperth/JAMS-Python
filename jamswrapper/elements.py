@@ -4,6 +4,7 @@ class ElementTemplate:
     def __init__(self, auth):
         self._auth = auth
         self._host = 'http://{}/jams/api/element/properties'.format(auth.host())
+        self._template = None
 
     def load(self, template):
         self._host = '{}/{}'.format(self._host, template)
@@ -23,15 +24,31 @@ class ElementTemplate:
 
 
 class ResourceTemplate(ElementTemplate):
+    def __init__(self, auth):
+        super(ResourceTemplate, self).__init__(auth)
+        ElementTemplate.load(self,'ResourceRequirement')
+
     def quantity_required(self, qty):
         res =  ElementTemplate.property(self, 'QuantityRequired')
         res['currentValue'] = qty
-        return res
 
     def resource(self, res_name):
         res = ElementTemplate.property(self, 'Resource')
-        r1 = res['defaultValue'].copy()
-        r1['resourceName'] = res_name
-        res['currentValue'] = r1
-        return res
+        tmp = res['defaultValue'].copy()
+        tmp['resourceName'] = res_name
+        res['currentValue'] = tmp
 
+class ScheduleTemplate(ElementTemplate):
+    def __init__(self, auth):
+        super(ScheduleTemplate, self).__init__(auth)
+        ElementTemplate.load(self,'ScheduleTrigger')
+
+    def scheduled_date(self, datestring):
+        res = ElementTemplate.property(self, 'ScheduledDate')
+        res['currentValue'] = datestring
+
+    def scheduled_time(self, time_string):
+        res = ElementTemplate.property(self, 'ScheduledTime')
+        tmp = res['defaultValue'].copy()
+        tmp['totalSeconds'] = time_string
+        res['currentValue'] = tmp
