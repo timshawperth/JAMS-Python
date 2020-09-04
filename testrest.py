@@ -7,9 +7,9 @@ import jamswrapper.elements
 
 
 def main():
-    host = '10.1.1.33'
-    user = 'tim.shaw'
-    password = '1Lamentations2:13'
+    host = 'replace with hostname or ip address of JAMS Web server'
+    user = 'user name to connect as'
+    password = 'password for user'
 
     auth = Auth.Auth(host, user, password)
 
