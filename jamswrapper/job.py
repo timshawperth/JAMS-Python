@@ -13,7 +13,7 @@ class Job:
         self._auth = auth
         self._target = 'http://{}/jams/api/job'.format(auth.host())
 
-        if parent_folder_name == None and method == None:
+        if parent_folder_name == None and method_name == None:
             self.load(jobname)
         else:
             self._newjob['jobName'] = jobname
